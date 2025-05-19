@@ -1,0 +1,84 @@
+---
+- name: Loop Example
+  hosts: node1
+  gather_facts: no
+  vars:
+    fruits:
+      - Apple
+      - Banana
+      - Orange
+    
+    users:
+      name: ABC
+      age: 20
+      id: 12345678
+
+    colors:
+      - [ R,G,B ]
+      - [ Y,P,W ]
+
+    students:
+      Alice:
+        first_name: Alice
+        last_name: Sun
+     
+      Erric:
+        first_name: Erric
+        last_name: Chen
+
+    clients:
+      - name: Jim
+        phone: 9875431
+      - name: Jeff
+        phone: 1234567
+
+    servers:
+      hostname: serverA
+      ip:
+        - 192.168.55.2
+        - 192.168.55.3
+  tasks:
+    - name: Display list with loop
+      debug:
+        msg: "List Item {{ item }}"
+      loop: "{{ fruits }}"
+ 
+
+    - name: Display dictionary with loop
+      debug:
+        msg: "Dictionary Item Key = {{ item.key }} Value = {{ item.value }}"
+      loop: "{{ users | dict2items }}"
+            #JSON
+            #[
+             #{"key": "name", "value": "ABC"},
+             #{"key": "age", "value": 20},
+             # {"key": "id", "value": 12345678}
+           #]
+           #YAML
+           # - {"key": "name", "value": "ABC"}
+           # - {"key": "age", "value": 20}
+           # - {"key": "id", "value": 12345678}
+    
+
+    - name: Display List of Dictionary with loop
+      debug:
+        msg: " List name = {{ item.name}} List phone = {{ item.phone }}"
+      loop: "{{ clients }}"
+
+    - name: Display Dictionary of list with loop
+      debug:
+        msg: " Item = {{ item }} Item key = {{ item.key }} Item Value = {{ item.value}} First Item Value = {{ item.value[0] }} Second Item Value = {{item.value.1}}"
+      loop: "{{ servers | dict2items }}"
+
+
+    - name: Display List of List with loop
+      debug:
+        msg: "Item = {{ item }} First Item = {{ item[0] }}, Second Item = {{ item.1}}, Third Item = {{ item[2] }}"
+              #  msg: "Item = {{ item }}"
+              #loop: "{{ colors  | flatten }}"
+      loop: "{{ colors }}"  
+
+    - name: Display Dictionary of Dictionary with loop
+      debug:
+        msg: "Item = {{ item}} Item Key = {{ item.key}} Item Value = {{ item.value}} Item First Name Value = {{ item.value.first_name}} Item Last Name Value = {{ item.value.last_name}}"
+      loop: "{{ students | dict2items}}"
