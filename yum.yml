@@ -1,0 +1,19 @@
+---
+- name: Yum Sample 
+  hosts: web 
+  #  gather_facts: no
+  vars:
+    packages:
+      - python3-ansible-pylibssh.x86_64
+      - libssh.x86_64 
+
+  tasks:
+    - name: Install packages
+      yum:
+        name: "{{ packages }}"
+        state: latest 
+
+    - name: Show info
+      debug:
+        msg: "{{ packages }}"
+

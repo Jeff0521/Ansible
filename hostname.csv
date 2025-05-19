@@ -1,0 +1,5 @@
+IP,NAME,OS
+192.168.56.21,lab_node1,linux
+192.168.56.22,lab_node2,unix
+192.168.56.23,lab_node3,windows
+

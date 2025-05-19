@@ -1,0 +1,11 @@
+[web]
+node1 ansible_host=192.168.56.21 
+node2 ansible_host=192.168.56.22
+
+[ap]
+node3 ansible_host=192.168.56.23 
+node4 ansible_host=192.168.56.24
+
+[linux:children]
+web
+ap

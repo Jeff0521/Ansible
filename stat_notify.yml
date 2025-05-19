@@ -1,0 +1,41 @@
+---
+- name: Stat Notify Sample
+  hosts: node3
+  gather_facts: no
+
+  tasks:
+    - name: Stat Sample
+      stat:
+        path: /tmp/test.txt
+      register: result
+
+    - name: Display info
+      debug:
+        var: result
+
+    - name:  Action
+      shell: cp /tmp/test.txt /tmp/jeff_test.txt
+      when: result.stat.exists == false 
+      changed_when: true  ##if module did not execute or execution failed, changed_when will not come into play
+      failed_when: false  ## so sometimes changed_when has to come with failed_when
+      notify: Remove test.txt file
+
+    - name: Action2
+      command: df -h
+      notify: Remove test.txt file
+
+  handlers:
+    ## multuple handlers with the same name, only the first handler will be performed
+    - name: Remove test.txt file
+      debug:
+        msg: "Hello"
+
+    - name: Remove test.txt file
+      file:
+        path: /tmp/test.txt
+        state: absent   
+
+
+    - name: Remove test.txt file
+      debug:
+        msg: "HeiIIII" 

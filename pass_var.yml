@@ -1,0 +1,9 @@
+---
+- name: Pass variables via command line
+  hosts: node1
+  gather_facts: no
+
+  tasks:
+    - name: Get variable from outside
+      debug:
+        msg:  "Hi {{ first_name }} {{ last_name }}" 

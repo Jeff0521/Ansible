@@ -1,0 +1,18 @@
+---
+- name:   one -name error sample
+  hosts: node3 
+  #  gather_facts: no
+  vars:
+    packages:
+      - python3-ansible-pylibssh.x86_64
+      - libssh.x86_64 
+
+  tasks:
+    - name: Install packages
+      yum:
+        name: libssh.x86_64
+        state: latest 
+
+      # In that only one - name specified, different module will cause error 
+      debug:
+        msg: "This is Second module debug"    

@@ -1,0 +1,17 @@
+---
+- name: Find example
+  hosts: node3
+  gather_facts: no
+  tasks:
+    - name: Find /var/log 
+      find:
+        path: /var/log
+        pattern: "*.log"
+        recurse: yes
+      register: output
+
+    - name: Show info
+      debug:
+        msg: "FILE NAME = {{item.path}}" 
+      loop: "{{ output.files }}"
+      when: item.mode != "0600"

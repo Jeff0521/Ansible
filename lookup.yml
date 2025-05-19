@@ -1,0 +1,61 @@
+---
+- name: Lookup Example
+  hosts: all
+  gather_facts: no
+  # vars:
+  #  file_name: hostname.csv
+  tasks:
+    - name: Get the following field in csv, lookup csv 
+      set_fact:
+        ## csvfile can only returin the following field
+        ROW: "{{ lookup('csvfile', ansible_host +' file=./hostname.csv delimiter=,')}}"
+  
+        #    - name: Split Row  
+        # set_fact:  
+        #server_name: "{{ ROW.split(',')[0] }}"
+        #server_os: "{{ ROW.split(',')[1] }}"
+         
+    - name: DISPLAY CSV second field
+      debug:
+        msg: " IP = {{ansible_host}} ROW = {{ ROW }}}"
+
+
+        # - name: Get the whole row
+        # set_fact:
+        #Data: "{{ lookup('file','hostname.csv').splitlines()}}"
+
+   ## if want to split, the split task cannot be included in lookup task       
+   # - name: Split Data
+   #   set_fact:
+   #     IP: "{{ Data.split(',')[0] }}"
+   #     HOSTNAME: "{{ Data.split(',')[1] }}"
+   #     OS: "{{ Data.split(',')[2] }}"
+
+    - name: Lookup file Display whole row with splitlines()
+      debug:
+        msg: "{{item.split(',')[0]}},{{item.split(',')[1]}},{{item.split(',')[2]}}"
+      loop: "{{ lookup('file','hostname.csv').splitlines()[2:]}}" #if no .splitlines(), all records will be a string
+                                                                  #.splitlines()[A:B], A means index of start point, so if the second record, A = 1
+    - name: Lookup file and read into list
+      set_fact:
+        line: "{{ lookup('file','hostname.csv', wantlist=true)}}"
+
+    - name: Display line by line ## still  all records will be a string but in a list. like purely file without splitlines
+      debug:
+        msg: "ITEM = {{item.split(',')[6]}}"
+      loop: "{{line}}"
+ 
+
+    - name: Lookup shell
+      debug:
+        msg: "{{ lookup('pipe', 'date') }}"
+
+        # no community.general.read_csv plugin
+        #- name: Lookup read_csv
+        #set_fact:
+        #rows: "{{ lookup('community.general.read_csv', 'file=hostname.csv delimiter=,') }}"
+
+        #- name: Display read_csv
+        #debug:
+        #msg: "{{ row}}"
+
