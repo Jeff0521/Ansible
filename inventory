@@ -1,6 +1,6 @@
 [web]
 node1 ansible_host=192.168.56.21 jeff=Jeff
-node2 ansible_host=192.168.56.22
+node2 ansible_host=192.168.56.22 jim=Jim
 
 [ap]
 node3 ansible_host=192.168.56.23 
